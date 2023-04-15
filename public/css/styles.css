@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap');
+body {
+    font-family: 'Abhaya Libre', serif;
+}
+/* Navegación de la página */
+header {
+    width: 100%;
+    height: 100px;
+}
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.subcontainer {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+.navigation {
+    display: flex;
+    list-style: none;
+}
+.navigation a {
+    color: #000;
+    font-size: 20px;
+    padding: 0.7rem;
+    margin-right: 35px;
+    text-decoration: none;
+}
+.navbuttons a {
+    color: #fff;
+    background-color: #006C6C;
+    border-radius: 5px;
+}
+.logo {
+    position: relative;
+    width: 250px; 
+    height: 100px;
+}
+.logo img {
+    position: absolute;
+    top: -100px;
+    width: 100%;
+    height: 300px;
+}
+/* contenido principal */
+main {
+    height: auto;
+}
+.contenedor1 {
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    left: 50px;
+    top: 220px;
+    background: rgba(255, 254, 254, 0.5);
+}
+.tituloprincipal {
+    margin: 10px;
+    font-size: 48px;
+    text-align: left;
+    line-height: 130%;
+}
+.contenedor2 {
+    position: absolute;
+    width: 450px;
+    left: 110px;
+    top: 440px;
+}
+.contenedor3 {
+    position: absolute;
+    width: 590px;
+    left: 34px;
+    top: 570px;
+}
+.parrafo1 {
+    font-size: 36px;
+    text-align: right;
+    line-height: 130%;
+}
+.parrafo2 {
+    font-size: 26px;
+    text-align: left;
+    line-height: 130%;
+}
+.fondo {
+    background-image: url(/images/estudiantes.png);
+    width: 100%;
+    height: 750px;
+    background-size: cover;
+    position: relative;
+}
+.fondo:before {
+        content:'';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.3);
+}
+/* Pie de la pagina */
+footer {
+    height: 20px;
+    text-align: center;
+}
