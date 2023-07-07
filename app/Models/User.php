@@ -3,24 +3,43 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Project;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function hasRole($admin)
+    {
+        return $this->rol === $admin;
+    }
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'nombres',
+        'apellidos',
+        'sexo',
+        'correo',
         'password',
+        'avatar',
+        'telefono',
+        'universidad',
+        'facultad',
+        'escuela',
+        'semestre',
     ];
 
     /**
