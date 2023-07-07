@@ -9,11 +9,21 @@
     <div class="p-10 color1">
         <div class="border-color2 border-radius color4">
             <div class="customtitle2 max-lg:text-3xl text-center color3 text-white custom-mt">
-                <h2 class="m-0 custom-bordercolor2 font-bold">Impacto</h2>
+                <h2 class="m-0 custom-bordercolor2 font-bold">{{$title}}</h2>
+            </div>
+            <div class="px-10 mt-10">
+                @if (session('success'))
+                <div class="p-3 mt-4 text-lg w-full text-green-800 rounded-lg border-2 border-green-800 bg-green-50 flex justify-between items-center" role="alert">
+                    <strong>{{ session('success') }}</strong>
+                </div>
+                @endif
             </div>
             <div class="mx-10 mt-10 mb-4">
-                <form action="{{ route('impacto.store', [$project->id, $impacto->id]) }}" method="POST" class="grid grid-cols-12 grid-rows-12 md:text-xl lg:text-2xl lg:gap-5 max-lg:pb-5 lg:py-10">
+                <form action="{{ $action }}" method="POST" class="grid grid-cols-12 grid-rows-12 md:text-xl lg:text-2xl lg:gap-5 max-lg:pb-5 lg:py-10">
                     @csrf
+                    @isset($method)
+                    @method($method)
+                    @endisset
                     <input type="hidden" name="project_id" value="{{ $project->id }}">
                     <!-- Campos que no están ocultos en el formulario -->
                     <div class="col-span-10">
@@ -31,7 +41,7 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="problema" id="problema" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3"></textarea>
+                            class="w-full py-1.5 px-3">{{$impacto->problema}}</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-target inline max-lg:w-7"
@@ -46,7 +56,7 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="proposito" id="proposito" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3"></textarea>
+                            class="w-full py-1.5 px-3">{{$impacto->proposito}}</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +75,7 @@
                         <label for="idea" class="md:text-xl lg:text-2xl">Idea de negocio:</label>
                     </div>
                     <div class="col-span-12">
-                        <textarea name="idea" id="idea" rows="5" maxlength="1000" class="w-full py-1.5 px-3"></textarea>
+                        <textarea name="idea" id="idea" rows="5" maxlength="1000" class="w-full py-1.5 px-3">{{$impacto->idea}}</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users inline max-lg:w-7"
@@ -81,7 +91,7 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="social" id="social" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3"></textarea>
+                            class="w-full py-1.5 px-3">{{$impacto->social}}</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-report-money inline max-lg:w-7"
@@ -98,7 +108,7 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="economico" id="economico" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3"></textarea>     
+                            class="w-full py-1.5 px-3">{{$impacto->economico}}</textarea>     
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tree inline max-lg:w-7"
@@ -115,7 +125,7 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="ambiental" id="ambiental" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3"></textarea>
+                            class="w-full py-1.5 px-3">{{$impacto->ambiental}}</textarea>
                         
                     </div>
                     <button class="button col-span-2 max-md:col-start-5 md:col-start-6 ml-7 mt-5"
