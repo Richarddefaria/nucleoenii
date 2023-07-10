@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Integrante;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -35,7 +37,7 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::with('integrantes')->findOrFail($id);
 
         return view('proyectospublicos.proyectodetalles', compact('project'));
     }
@@ -96,9 +98,9 @@ class ProjectController extends Controller
         } else {
             $filename4 = null;
         }
-        
 
-        Project::create([
+
+        $project = Project::create([
             'nombre' => $request->nombre,
             'escuela' => $request->escuela,
             'area' => $request->area,
@@ -117,6 +119,28 @@ class ProjectController extends Controller
             'twitter' => $request->twitter,
             'youtube' => $request->youtube,
         ]);
+
+        $user = $request->user();
+        $integrante = new Integrante();
+        $integrante->user_id = $user->id;
+        $integrante->project_id = $project->id;
+        $integrante->save();
+
+        $cedulas = $request->input('integrantes');
+
+        $integrantes = [];
+        foreach ($cedulas as $cedula) {
+            $user = User::where('cedula', $cedula)->first();
+
+            if ($user) {
+                $integrantes[] = [
+                    'user_id' => $user->id,
+                    'project_id' => $project->id
+                ];
+            }
+        }
+
+        Integrante::insert($integrantes);
 
         return redirect()->route('misproyectos')->with('success', '¡Proyecto registrado exitosamente!');
     }
