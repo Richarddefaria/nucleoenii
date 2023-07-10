@@ -9,16 +9,15 @@
     <div class="p-10 color1">
         <div class="border-color2 border-radius color4">
             <div class="customtitle2 max-lg:text-3xl text-center color3 text-white custom-mt">
-                <h2 class="m-0 custom-bordercolor2 font-bold">Hipótesis</h2>
+                <h2 class="m-0 custom-bordercolor2 font-bold">{{ $title}}</h2>
             </div>
-            <div class="mx-10 mt-10 mb-4">
-                <input type="hidden" name="proyecto_id" value="{{ $project->id }}">
-
-                <form action="{{ isset($hipoteses) ? route('hipoteses.update', [$project->id, $hipoteses->id]) : route('hipoteses.store', $project->id) }}" method="POST"
+            @include('layouts.flashmessage')
+            <div class="mx-10 mt-5 mb-4">
+                <form action="{{ $action }}" method="POST"
                     class="grid grid-cols-12 grid-rows-12 gap-5 md:text-xl lg:text-2xl max-lg:pb-5 lg:py-10">
                     @csrf
-                    @if(isset($hipoteses))
-                        @method('PUT')
+                    @isset ($method)
+                    @method($method)
                     @endif
                     <input type="hidden" name="project_id" value="{{ $project->id }}">
                     <!-- Campos que no están ocultos en el formulario -->
@@ -37,10 +36,8 @@
                         <label for="cree" class="">Cree:</label>
                     </div>
                     <div class="col-span-12">
-                        <textarea name="cree" id="cree" rows="5" maxlength="1000" class="w-full py-1.5 px-3"> {{$hipoteses->cree}}</textarea>
-                        @error('cree')
-                        <small class="text-red-600"> {{ $message }}</small>
-                        @enderror
+                        <textarea name="cree" id="cree" rows="5" maxlength="1000"
+                            class="w-full py-1.5 px-3">{{ $hipoteses->cree}}</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -56,10 +53,7 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="observa" id="observa" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3">{{ $hipoteses->observa}} </textarea>
-                        @error('observa')
-                        <small class="text-red-600"> {{ $message }}</small>
-                        @enderror
+                            class="w-full py-1.5 px-3">{{ $hipoteses->observa}}</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -80,10 +74,7 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="aprende" id="aprende" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3"></textarea>
-                        @error('aprende')
-                        <small class="text-red-600"> {{ $message }}</small>
-                        @enderror
+                            class="w-full py-1.5 px-3">{{ $hipoteses->aprende}}</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -98,16 +89,27 @@
                     </div>
                     <div class="col-span-12">
                         <textarea name="accion" id="accion" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3"></textarea>
-                        @error('accion')
-                        <small class="text-red-600"> {{ $message }}</small>
-                        @enderror
+                            class="w-full py-1.5 px-3">{{ $hipoteses->accion}}</textarea>
+
                     </div>
                     <button class="button max-lg:col-span-5 col-span-2 max-md:col-start-5 md:col-start-6 mt-5"
                         type="submit">Guardar</button>
                 </form>
             </div>
         </div>
+        <div class="flex justify-end text-2xl mt-5 items-center">
+            <svg id="add-input" xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-circle-plus ml-7 cursor-pointer" width="30" height="30"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#FE8101" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M9 12l6 0" />
+                            <path d="M12 9l0 6" />
+                        </svg>
+            <button id="add-hipoteses-btn" class="text-white font-bold">Añadir otra Hipótesis</button>
+        </div>
+        <div id="hipoteses-container"></div>
     </div>
 </div>
 @endsection
