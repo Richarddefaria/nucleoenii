@@ -9,14 +9,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Project;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function projects()
+    public function projects(): HasMany
     {
-        return $this->hasMany(Project::class);
+        return $this->HasMany(Project::class, 'integrantes', 'user_id', 'project_id');
     }
 
     public function hasRole($admin)
@@ -32,14 +34,10 @@ class User extends Authenticatable
         'nombres',
         'apellidos',
         'sexo',
-        'correo',
+        'emp_correo',
         'password',
         'avatar',
         'telefono',
-        'universidad',
-        'facultad',
-        'escuela',
-        'semestre',
     ];
 
     /**
