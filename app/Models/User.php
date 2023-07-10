@@ -11,14 +11,19 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function projects(): HasMany
+    public function projects(): BelongsToMany
     {
-        return $this->HasMany(Project::class, 'integrantes', 'user_id', 'project_id');
+        return $this->BelongsToMany(Project::class, 'integrantes', 'user_id', 'project_id');
+    }
+    public function integrante(): HasOne
+    {
+        return $this->hasOne(Integrante::class);
     }
 
     public function hasRole($admin)
