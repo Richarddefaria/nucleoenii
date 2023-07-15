@@ -14,7 +14,7 @@
             </div>
             @include('layouts.flashmessage')
             <div class="max-md:mx-6 max-lg:mx-12 mx-10 mt-5 mb-4">
-                <form action="{{ route ('actualizarproyecto.update', $project->id)}}" method="POST"
+                <form action="{{ route ('actualizarproyecto', $project->id)}}" method="POST"
                     class="grid grid-cols-12 grid-rows-12 max-lg:gap-3 lg:gap-5 md:text-xl lg:text-2xl lg:py-10"
                     enctype="multipart/form-data">
                     @csrf
@@ -301,11 +301,14 @@
                                 <p class="">{{$nombres_parts[0]}} {{
                                     $apellidos_parts[0]}} - {{$integrante->user->facultad}}</p>
                                 @endif
-                                <a href="{{ route('eliminarintegrante', [$project->id, $integrante->id])}}" class="ml-2 text-red-600 hover:text-red-800">Eliminar</a>
+                                {{--<a href="{{ route('eliminarintegrante', [$project->id, $integrante->id])}}"
+                                    class="delete ml-2 text-red-600 hover:text-red-800">Eliminar</a>--}}
+                                    <button type="button" data-id="{{$integrante->id}}" class="delete ml-2 text-red-600 hover:text-red-800">Eliminar</button>
                             </div>
                         </div>
                         @endforeach
                     </div>
+
                     <div class="row-start-12">
                         <svg id="add-input" xmlns="http://www.w3.org/2000/svg"
                             class="icon icon-tabler icon-tabler-circle-plus ml-3 cursor-pointer inline" width="44"
@@ -445,4 +448,26 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).on("click", ".delete", function() { 
+        var $ele = $(this).parent().parent();
+        var id= $(this).val();
+        var url = "/mis-proyectos/{project}/actualizarproyecto/{integrante}";
+        var dltUrl = url+"/"+id;
+		$.ajax({
+			url: dltUrl,
+			type: "DELETE",
+			cache: false,
+			data:{
+				_token:'{{ csrf_token() }}'
+			},
+			success: function(dataResult){
+				var dataResult = JSON.parse(dataResult);
+				if(dataResult.statusCode==200){
+					$ele.fadeOut().remove();
+				}
+			}
+		});
+	});
+</script>
 @endsection
