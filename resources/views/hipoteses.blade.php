@@ -12,7 +12,8 @@
                 <h2 class="m-0 custom-bordercolor2 font-bold">{{ $title}}</h2>
             </div>
             @include('layouts.flashmessage')
-            <div class="mx-10 mt-5 mb-4">
+            @foreach ($project->hipoteses as $hipoteses)
+            <div class="mx-10 mt-5 mb-4" id="hipotesis-container">
                 <form action="{{ $action }}" method="POST"
                     class="grid grid-cols-12 grid-rows-12 gap-5 md:text-xl lg:text-2xl max-lg:pb-5 lg:py-10">
                     @csrf
@@ -20,6 +21,7 @@
                     @method($method)
                     @endif
                     <input type="hidden" name="project_id" value="{{ $project->id }}">
+                    <input type="hidden" name="hipoteses_id" value="{{ $hipoteses->id }}">
                     <!-- Campos que no están ocultos en el formulario -->
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -90,26 +92,39 @@
                     <div class="col-span-12">
                         <textarea name="accion" id="accion" rows="5" maxlength="1000"
                             class="w-full py-1.5 px-3">{{ $hipoteses->accion}}</textarea>
-
                     </div>
                     <button class="button max-lg:col-span-5 col-span-2 max-md:col-start-5 md:col-start-6 mt-5"
                         type="submit">Guardar</button>
                 </form>
             </div>
+            @endforeach
         </div>
         <div class="flex justify-end text-2xl mt-5 items-center">
             <svg id="add-input" xmlns="http://www.w3.org/2000/svg"
-                            class="icon icon-tabler icon-tabler-circle-plus ml-7 cursor-pointer" width="30" height="30"
-                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#FE8101" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                            <path d="M9 12l6 0" />
-                            <path d="M12 9l0 6" />
-                        </svg>
-            <button id="add-hipoteses-btn" class="text-white font-bold">Añadir otra Hipótesis</button>
+                class="icon icon-tabler icon-tabler-circle-plus ml-7 cursor-pointer" width="30" height="30"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#FE8101" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                <path d="M9 12l6 0" />
+                <path d="M12 9l0 6" />
+            </svg>
+            <button type="button" class="text-white font-bold clon">Añadir otra Hipótesis</button>
         </div>
-        <div id="hipoteses-container"></div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+  
+  var elm_html = $('#hipotesis-container').html();   //faz uma cópia dos elementos a serem clonados.
+
+  $(document).on('click', '.clon', function(e){
+      e.preventDefault();
+      var i = $('.cadastroGato').length;    //pega a quantidade de clones;
+      var elementos = elm_html.replace(/\[[0\]]\]/g, '['+i+++']');  //substitui o valor dos index e incrementa++
+      $('#hipotesis-container').append(elementos);  //exibe o clone.
+  });
+
+});
+</script>
 @endsection
