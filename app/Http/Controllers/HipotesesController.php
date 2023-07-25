@@ -36,30 +36,46 @@ class HipotesesController extends Controller
     public function store(Request $request, $project)
     {
         $request->validate([
+            'hipoteses' => ['required', 'array'],
             'cree' => ['nullable', 'string', 'max:3000'],
             'aprende' => ['nullable', 'string', 'max:3000'],
             'observa' => ['nullable', 'string', 'max:3000'],
             'accion' => ['nullable', 'string', 'max:3000'],
         ]);
 
-        $hipoteses = new Hipoteses();
+  /*    $hipoteses = new Hipoteses();
         $hipoteses->cree = $request->input('cree');
         $hipoteses->aprende = $request->input('aprende');
         $hipoteses->observa = $request->input('observa');
         $hipoteses->accion = $request->input('accion');
         $hipoteses->project_id = $project;
-
-        $title = __('Modificar Hipótesis');
         $hipoteses->save();
+*/
+        $hipotesesData = $request->input('hipoteses');
 
+        $hipoteses = [];
+        foreach ($hipotesesData as $datosHipotesis) {
+
+            $hipoteses[] = new Hipoteses([
+                'cree' => $datosHipotesis['cree'],
+                'observa' => $datosHipotesis['observa'],
+                'aprende' => $datosHipotesis['aprende'],
+                'accion' => $datosHipotesis['accion'],
+                'project_id' => $project,
+            ]);
+        }
+
+        Hipoteses::insert($hipoteses);
+
+        $title = __('Hipótesis');
         $project = Project::find($project);
         $nombreProject = $project->nombre;
 
         $action = route('hipoteses.update', ['project' => $project, 'hipoteses' => $hipoteses]);
-        $method = 'PUT';
+
         session()->flash('hipoteses_success_create', 'Hipótesis creada exitosamente');
 
-        return view('hipoteses', compact('project', 'hipoteses', 'nombreProject', 'title', 'action', 'method'));
+        return view('hipoteses', compact('project', 'hipoteses', 'nombreProject', 'title', 'action'));
     }
 
     public function edit($project, $hipoteses)
