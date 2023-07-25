@@ -12,10 +12,36 @@
                 <h2 class="m-0 custom-bordercolor2 font-bold">{{ $title}}</h2>
             </div>
             @include('layouts.flashmessage')
-            @foreach ($project->hipoteses as $hipoteses)
+            <div class="text-2xl grid grid-cols-12 mx-10">
+                @if (request()->routeIs('hipoteses.create'))
+                <!-------->
+                @else
+                <a href="{{ route('hipoteses.create', $project->id)}}" class="font-bold text-color2 underline col-span-3">Crear otra hipótesis</a>
+                @endif
+            @if ($hipoteses->count() > 0)
+            <div class="col-span-5 col-start-8 ml-12">
+                <label for="hipoteses" class="mr-4">Editar Hipótesis:</label>
+                <select name="id" id="hipoteses">
+                    <option value="">Selecciona una hipótesis</option>
+                    @php
+                    $contador = 1;
+                    @endphp
+                    @forelse ($project->hipoteses as $hipotese)
+                    <option value="{{ route('hipoteses.edit', [$project->id, $hipotese->id]) }}" class="hover:bg-slate-900">Hipótesis {{ $contador
+                        }}</option>
+                    @php
+                    $contador++;
+                    @endphp
+                    @empty
+                    a
+                    @endforelse
+                </select>
+            </div>
+            @endif
+        </div>
             <div class="mx-10 mt-5 mb-4" id="hipotesis-container">
                 <form action="{{ $action }}" method="POST"
-                    class="grid grid-cols-12 grid-rows-12 gap-5 md:text-xl lg:text-2xl max-lg:pb-5 lg:py-10">
+                    class="clonedForm grid grid-cols-12 grid-rows-12 gap-5 md:text-xl lg:text-2xl max-lg:pb-5 lg:py-10">
                     @csrf
                     @isset ($method)
                     @method($method)
@@ -38,8 +64,8 @@
                         <label for="cree" class="">Cree:</label>
                     </div>
                     <div class="col-span-12">
-                        <textarea name="cree" id="cree" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3">{{ $hipoteses->cree}}</textarea>
+                        <textarea name="hipoteses[][cree]" id="cree" rows="5" maxlength="1000"
+                            class="w-full py-1.5 px-3">@if (request()->routeIs('hipoteses.create'))@else{{ $hipoteses->cree}}@endif</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -54,8 +80,8 @@
                         <label for="observa" class="">Observa:</label>
                     </div>
                     <div class="col-span-12">
-                        <textarea name="observa" id="observa" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3">{{ $hipoteses->observa}}</textarea>
+                        <textarea name="hipoteses[][observa]" id="observa" rows="5" maxlength="1000"
+                            class="w-full py-1.5 px-3">@if (request()->routeIs('hipoteses.create'))@else{{ $hipoteses->observa}}@endif</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -75,8 +101,8 @@
                         <label for="aprende" class="">Aprende:</label>
                     </div>
                     <div class="col-span-12">
-                        <textarea name="aprende" id="aprende" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3">{{ $hipoteses->aprende}}</textarea>
+                        <textarea name="hipoteses[][aprende]" id="aprende" rows="5" maxlength="1000"
+                            class="w-full py-1.5 px-3">@if (request()->routeIs('hipoteses.create'))@else{{ $hipoteses->aprende}}@endif</textarea>
                     </div>
                     <div class="col-span-10">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -90,15 +116,15 @@
                         <label for="accion" class="">Acción:</label>
                     </div>
                     <div class="col-span-12">
-                        <textarea name="accion" id="accion" rows="5" maxlength="1000"
-                            class="w-full py-1.5 px-3">{{ $hipoteses->accion}}</textarea>
+                        <textarea name="hipoteses[][accion]" id="accion" rows="5" maxlength="1000"
+                            class="w-full py-1.5 px-3">@if (request()->routeIs('hipoteses.create'))@else{{ $hipoteses->accion}}@endif</textarea>
                     </div>
                     <button class="button max-lg:col-span-5 col-span-2 max-md:col-start-5 md:col-start-6 mt-5"
                         type="submit">Guardar</button>
                 </form>
             </div>
-            @endforeach
         </div>
+        @if (request()->routeIs('hipoteses.create'))
         <div class="flex justify-end text-2xl mt-5 items-center">
             <svg id="add-input" xmlns="http://www.w3.org/2000/svg"
                 class="icon icon-tabler icon-tabler-circle-plus ml-7 cursor-pointer" width="30" height="30"
@@ -111,6 +137,8 @@
             </svg>
             <button type="button" class="text-white font-bold clon">Añadir otra Hipótesis</button>
         </div>
+        @else
+        @endif
     </div>
 </div>
 <script>
@@ -120,11 +148,19 @@
 
   $(document).on('click', '.clon', function(e){
       e.preventDefault();
-      var i = $('.cadastroGato').length;    //pega a quantidade de clones;
+      var i = $('.clonedForm').length;    //pega a quantidade de clones;
       var elementos = elm_html.replace(/\[[0\]]\]/g, '['+i+++']');  //substitui o valor dos index e incrementa++
       $('#hipotesis-container').append(elementos);  //exibe o clone.
   });
 
 });
+</script>
+<script>
+    document.getElementById('hipoteses').addEventListener('change', function() {
+        var url = this.value;
+        if (url !== '') {
+            window.location.href = url;
+        }
+    });
 </script>
 @endsection
